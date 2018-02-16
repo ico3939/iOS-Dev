@@ -14,4 +14,8 @@ class CounterBrain {
     func increment() {
         total += 1
     }
+    
+    func decrement() {
+        total -= 1
+    }
 }

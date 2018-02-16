@@ -41,6 +41,9 @@ class ViewController: UIViewController {
     
     @IBAction func plusButtonPressed(_ sender: Any) {
         total += 1
+        if(total > 999){
+            total = 999
+        }
         displayTotal()
         
     }

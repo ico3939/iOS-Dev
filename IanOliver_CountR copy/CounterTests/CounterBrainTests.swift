@@ -27,5 +27,16 @@ class CounterBrainTests: XCTestCase {
         //3. Assert
         XCTAssertEqual(counter.total, 1)
     }
+    
+    func testDecrementSubtractsOneFromTotal(){
+        //1. Arrange
+        let counter = CounterBrain()
+        
+        //2. Act
+        counter.decrement()
+        
+        //3. Assert
+        XCTAssertEqual(counter.total, -1)
+    }
    
 }

@@ -10,18 +10,16 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    var model: SimpleModel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        assert(model != nil, "Use dependency injection to seet up model")
         
         print(#function)
         view.backgroundColor = .red
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 
 }
 

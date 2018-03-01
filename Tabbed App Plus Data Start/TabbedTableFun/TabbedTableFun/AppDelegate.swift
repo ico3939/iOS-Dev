@@ -1,24 +1,12 @@
 //
 //  AppDelegate.swift
-//  NoStoryboards
+//  TabbedTableFun
 //
-//  Created by Student on 2/27/18.
-//  Copyright © 2018 Student. All rights reserved.
+//  Created by jefferson on 3/8/17.
+//  Copyright © 2017 Ima Student. All rights reserved.
 //
 
 import UIKit
-
-func loadVewController(named name: String) -> UIViewController {
-    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-    let viewController = storyBoard.instantiateViewController(withIdentifier: name)
-    return viewController
-}
-
-// TODO: Move to SimpleModel.swift
-class SimpleModel{
-    var color = UIColor.green
-    var name = "SimpleModel"
-}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,27 +15,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let model = AppData()
         
-        let model = SimpleModel()
+        // Set the model on the view controllers
         
-//        let viewController1 = ViewController()
-        let viewController1 = loadVewController(named: "ViewController") as! ViewController // want to fail quickly, programmer error
-        viewController1.model = model
-        
-        let viewController2 = YellowViewController()
-        
-        let tabBarController = UITabBarController()
-        
-        viewController1.tabBarItem = UITabBarItem(tabBarSystemItem: .topRated, tag: 0)
-        viewController2.tabBarItem = UITabBarItem(tabBarSystemItem: .history, tag: 1)
-
-        tabBarController.viewControllers = [viewController1, viewController2]
-        
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = tabBarController
-        
-        window?.makeKeyAndVisible()
-        
+        if let tabBarController = window?.rootViewController as? UITabBarController {
+            if let navController = tabBarController.viewControllers![0] as? UINavigationController {
+                if let bookmarksTableVC = navController.viewControllers.first as? BookmarksTableVC {
+                    bookmarksTableVC.model = model
+                }
+            }
+            
+            if let navController = tabBarController.viewControllers![1] as? UINavigationController {
+                if let downloadsTableVC = navController.viewControllers.first as? DownloadsTableVC {
+                    downloadsTableVC.model = model
+                }
+            }
+            
+            if let navController = tabBarController.viewControllers![2] as? UINavigationController {
+                if let favoritesTableVC = navController.viewControllers.first as? FavoritesTableVC {
+                    favoritesTableVC.model = model
+                }
+            }
+        }
         
         return true
     }

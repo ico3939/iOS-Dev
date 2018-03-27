@@ -36,12 +36,13 @@ class ViewController: UIViewController, MKMapViewDelegate {
             let parkList = try decoder.decode(StateParkList.self, from: data)
             print(parkList)
             
+            ParkData.sharedData.parks = parkList.parks
             mapView.addAnnotations(ParkData.sharedData.parks)
-            
+
             let myRegion = MKCoordinateRegionMakeWithDistance(parkList.parks[0].coordinate, metersPerMile * 100, metersPerMile * 100)
             mapView.setRegion(myRegion, animated: true)
             mapView.selectAnnotation(parkList.parks[0], animated: true)
-            ParkData.sharedData.parks = parkList.parks
+            
             
         } catch {
             print("Error: could not initialize JSON data")

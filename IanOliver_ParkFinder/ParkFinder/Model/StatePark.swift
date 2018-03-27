@@ -7,12 +7,15 @@
 //
 
 import Foundation
+import MapKit
+import CoreLocation
 
 public struct StateParkList: Codable {
     var parks: [StatePark]
 }
 
-public struct StatePark: CustomStringConvertible, Codable { // allows us to do print statements for our objects and code and decode them
+
+public class StatePark: NSObject, Codable, MKAnnotation { // allows us to do print statements for our objects and code and decode them
     private var name: String
     private var latitude: Double
     private var longitude: Double
@@ -24,13 +27,13 @@ public struct StatePark: CustomStringConvertible, Codable { // allows us to do p
         
     }
     
-    init(name: String, latitude: Double, longitude: Double) {
+    public init(name: String, latitude: Double, longitude: Double) {
         self.name = name
         self.latitude = latitude
         self.longitude = longitude
     }
     
-    public init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do {
@@ -48,8 +51,23 @@ public struct StatePark: CustomStringConvertible, Codable { // allows us to do p
         self.longitude = Double(longitudeString)!
     }
     
-    public var description: String {
+    public override var description: String {
         return "\(name): (\(latitude),\(longitude))"
     }
     
+    public var title: String? {
+        return name
+    }
+    
+    public var subtitle: String? {
+        return "I ❤ NY"
+    }
+
+}
+
+extension StatePark {
+    public var coordinate: CLLocationCoordinate2D {
+        return CLLocationCoordinate2DMake(CLLocationDegrees(latitude), CLLocationDegrees(longitude))
+    }
+
 }

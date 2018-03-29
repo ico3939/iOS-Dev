@@ -1,0 +1,22 @@
+Ideas:
+Weather alarm clock
+	⁃	allows the user to pick pieces of music based on a given type of weather
+	⁃	raining
+	⁃	sunny
+	⁃	snowy
+	⁃	cloudy
+	⁃	hot/cold (over/under a certain temperature)
+	⁃	windy
+	⁃	plays the piece of music based on the current weather
+	⁃	potential for multiple pieces of music for a given condition
+	⁃	If number of pieces > 1; the piece is randomly chosen
+	⁃	has a library of default public domain themes
+	⁃	Otherwise, the user can choose the music from a certain folder
+	⁃	different visuals based on the current weather
+	⁃	User can also use different pieces between a full night’s rest and just taking a nap
+	⁃	Dark Sky API for weather data
+	⁃	Forecast for the next 24 hours
+	⁃	Can choose to wake up at sunrise
+	⁃	If the weather is inclement (snowy/heavy rain) you can choose to wake up earlier
+	⁃	takes current location
+	⁃	allow the user to choose type of units (metric vs customary)  

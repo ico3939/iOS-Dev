@@ -24,7 +24,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
     
     func loadData() {
         guard let path = Bundle.main.url(forResource: "parks", withExtension: "json") else {
-            print("Eror: could not find path parks.json")
+            print("Error: could not find path parks.json")
             return
         }
         

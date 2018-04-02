@@ -53,10 +53,60 @@ class ViewController: UIViewController {
         } else {
             print("Did not write \(arrayPath) to disk")
         }
+        
+        // Save and Read Dictionaries
+        let monster = NSMutableDictionary()
+        monster["name"] = "goblin"
+        monster["hp"] = 5
+        monster["weapon"] = "Club"
+        let dPath = FileManager.filePathInDocumentsDirectory(fileName: "monster.plist")
+        monster.write(to: dPath, atomically: true)
+        if success {
+            print("Wrote \(dPath) to disk")
+            // read it back from the disk
+            print(NSMutableDictionary(contentsOf: dPath)!)
+        } else {
+            print("Did not write \(dPath) to disk")
+        }
+        
+        // Test new extensions
+        print("---------------")
+        print(FileManager.contentsOfDir(url:FileManager.documentsDirectory))
+        print(FileManager.fileExistsInDocumentsDirectory(fileName:"playerName2.txt"))
+        FileManager.deleteFileInDocumentsDirectory(fileName: "playerName2.txt")
+        print(FileManager.contentsOfDir(url:FileManager.documentsDirectory))
+        print(FileManager.fileExistsInDocumentsDirectory(fileName:"playerName2.txt"))
+        FileManager.deleteFileInDocumentsDirectory(fileName:"bad-file-name.txt")
+        
+        // Test clearing the documents folder
+        FileManager.clearDocumentsFolder()
+        print(FileManager.contentsOfDir(url: FileManager.documentsDirectory))
+        
+        // Test saving images
+        print("---------------")
+        print("Outside DispatchQueue - Thread.isMainThread=\(Thread.isMainThread)")
+        DispatchQueue.main.async {
+            print("Inside DispatchQueue - Thread.isMainThread=\(Thread.isMainThread)")
+            if let url = URL(string: "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"){
+                let startTime = NSDate().timeIntervalSince1970
+                do {
+                    let imageData = try Data(contentsOf: url)
+                    let image = UIImage(data: imageData)
+                    let totalTime = NSDate().timeIntervalSince1970 - startTime
+                    print("time to load = \(totalTime) seconds")
+                    let url = FileManager.filePathInDocumentsDirectory(fileName: "google.png")
+                    image?.saveImageAsPNG(url: url)
+                    print("Save image to \(url)")
+                } catch {
+                    print("ERROR: \(error)")
+                    
+                }
+            }
+        }
     }
     
     func savePlayer(playerName: String, path: URL) throws {
-        try playerName.write(to: path, atomically: true, encoding: .utf8)
+        try playerName.write(to: path, atomically: true, encoding: String.Encoding.utf8)
         print("Saved to path: \(path)")
     }
 

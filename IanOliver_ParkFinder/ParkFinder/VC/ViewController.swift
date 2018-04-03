@@ -8,14 +8,21 @@
 
 import UIKit
 import MapKit
+let showParkNotification = NSNotification.Name("showParkNotification")
 
 class ViewController: UIViewController, MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     var metersPerMile:Double = 1609.34
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // get the notification center - it's a singleton
+        let nc = NotificationCenter.default
+        // register this objec as an observer
+        nc.addObserver(self, selector: #selector(showMap), name: showParkNotification, object: nil)
         
         mapView.delegate = self
         loadData()
@@ -24,7 +31,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
     
     func loadData() {
         guard let path = Bundle.main.url(forResource: "parks", withExtension: "json") else {
-            print("Error: could not find path parks.json")
+            print("Eror: could not find path parks.json")
             return
         }
         
@@ -51,7 +58,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let title = view.annotation?.title ?? "No title Found"
-        print("Tapped \(title!))")
+        print("Tapped \(title!)")
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -85,6 +92,20 @@ class ViewController: UIViewController, MKMapViewDelegate {
         
         print("Tapped info button for\(annotation.description)")
         print("Maybe we could do something more interesting here, like go to a related URL, open the maps app and show the location, or show some park info in a new VC or tab.")
+    }
+    
+    @objc func showMap(notification: NSNotification) {
+        // change to map tab - this works as long as the map is on the first tab
+        tabBarController?.selectedIndex = 0
+        
+        // select the park annotation that was passed over
+        if let park = notification.userInfo!["park"] as? MKAnnotation {
+            mapView.selectAnnotation(park, animated: true)
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
